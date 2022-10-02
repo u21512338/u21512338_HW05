@@ -1,0 +1,130 @@
+﻿@model List<Book>
+@using u21512338_HW05.Models;
+@*@model List<u21512338_HW05.Models.Author>*@
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<style type="text/css">
+    .crudContainer {
+        position: absolute;
+        width: 75%;
+    }
+
+    .roundAddButton {
+        position: absolute;
+        top: 20px;
+        right: 0;
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 10px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        border-radius: 60%;
+    }
+
+    .plainAddButton {
+        position: absolute;
+        top: 16px;
+        right: 0;
+        font-size: 32px;
+    }
+</style>
+
+@if (ViewBag.Status != 0)
+{
+    <div class="row crudContainer">
+
+        <h1>Book</h1>
+
+        @using (Html.BeginForm("FuzzySearch", "Home", FormMethod.Post, new { style = "width:100%" }))
+        {
+            <div class="col-md-4">
+                <input type="text" style="width:100%;max-width:none; display:inline" name="searchText" class="form-control" placeholder="Search" />
+            </div>
+
+            <div class="col-md-2">
+                @Html.DropDownList("author", new SelectList(Model, "bookID", "authorN"), new { @class = "form-control", required = "required" });
+            </div>
+
+            <div class="col-md-2">
+                @Html.DropDownList("type", new SelectList(Model, "bookID", "typeN"), new { @class = "form-control", required = "required" });
+            </div>
+
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary" style="width: 100%; background-color: forestgreen; color: white">Search</button>
+            </div>
+
+            <div class="col-md-2">
+                <a href="@Url.Action("Index", "Home")" class="btn btn-primary" title="Clear Search" style="width: 100%; background-color: red; color: white">Clear</a>
+            </div>
+
+        
+        
+
+        }
+
+        @*@if (ViewBag.SearchStatus == 2)
+        {
+            @ViewBag.SearchText
+            <a href="@Url.Action("Index", "Home")" class="btn" title="Clear Search"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span></a>
+        }*@
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Author</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Page Count</th>
+                    <th scope="col">Points</th>
+                    <th scope="col">Status</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Book bookRecord in Model)
+                {
+                    <tr>
+                        <td>@bookRecord.bookID</td>
+                        <td>@bookRecord.aName</td>
+                        <td>@bookRecord.authorN</td>
+                        <td>@bookRecord.typeN</td>
+                        <td>@bookRecord.pageCount</td>
+                        <td>@bookRecord.point</td>
+
+                        <td id="Status">
+
+                            <i style="color:forestgreen">Available</i>
+
+                            @*@if (bookRecord.bDate != DateTime.MinValue)
+                             {
+                                    <i style="color:forestgreen">Available</i>
+                             }
+                             else
+                             {
+                                <i style="color:red">Book Out</i>
+                             }*@
+                        </td>
+
+                        <td>@Html.ActionLink("View", "BookDetails", "Home", new { bID = bookRecord.bookID }, new { @class = "btn btn-primary" })</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+ }
+
+@*<script>
+    function ACheck() {
+        $("#Status").html("Checking...");
+        $.post("@Url.Action("CheckAvailability", "Home")"),
+            {bookData: $("#")}
+
+    }
+</script>*@

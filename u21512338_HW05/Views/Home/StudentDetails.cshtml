@@ -1,0 +1,78 @@
+﻿@using u21512338_HW05.Models;
+@model List<Student>
+
+@{
+    ViewBag.Title = "StudentDetails";
+}
+
+@if (ViewBag.Status != 0)
+{
+    <div class="row crudContainer">
+        <h1>Student</h1>
+        @using (Html.BeginForm("StudentSearch", "Home", FormMethod.Post, new { style = "width:100%" }))
+        {
+        
+
+            <div class="col-md-3">
+                <input type="text" style="width:100%;max-width:none; display:inline" name="searchText2" class="form-control" placeholder="Search"/>
+            </div>
+
+            <div class="col-md-3">
+                @Html.DropDownList("class", new SelectList(Model, "studentID", "Class"), new { @class = "form-control", required = "required" });
+            </div>
+
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-primary" style="width: 100%; background-color: forestgreen; color: white">Search</button>
+            </div>
+
+            <div class="col-md-3">
+                <a href="@Url.Action("StudentDetails", "Home")" class="btn btn-primary" title="Clear Search" style="width: 100%; background-color: red; color: white">Clear</a>
+            </div>
+
+        }
+
+
+        @*@if (ViewBag.SearchStatus == 2)
+        {
+            @ViewBag.SearchText
+            <a href="@Url.Action("StudentDetails", "Home")" class="btn" title="Clear Search"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span></a>
+        }*@
+
+
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Surname</th>
+                    <th scope="col">Class</th>
+                    <th scope="col">Points</th>
+                    <th scope="col">Borrow Book</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Student studentRecord in Model)
+                {
+                    <tr>
+                        <td id="sID">@studentRecord.studentID</td>
+                        <td>@studentRecord.sName</td>
+                        <td>@studentRecord.sSurname</td>
+                        <td>@studentRecord.Class</td>
+                        <td>@studentRecord.point</td>
+                        <td><button type="submit" class="btn btn-primary" id="Bbook" onclick="BorrowBook()">Borrow Book</button></td>
+                    </tr>
+
+
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+@*<script>
+    document.getElementById("Bbook").onclick(
+        {
+            document.getElementById("Bbook").style.visibility = "hidden",
+            document.getElementById("Rbook").style.visibility = "visible"
+        })
+</script>*@
